@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(location.search);
   const postId = params.get('id');
 
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  const post = PostStore.getById(postId);
+  const post = await PostStore.getById(postId);
 
   if (!post) {
     document.getElementById('post-detail').innerHTML =
@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
     location.href = `write.html?edit=${post.id}`;
   });
 
-  document.getElementById('btn-delete').addEventListener('click', () => {
+  document.getElementById('btn-delete').addEventListener('click', async () => {
     if (confirm('정말로 이 글을 삭제하시겠습니까?')) {
-      PostStore.remove(post.id);
+      await PostStore.remove(post.id);
       location.href = '/';
     }
   });

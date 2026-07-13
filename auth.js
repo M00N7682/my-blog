@@ -1,11 +1,8 @@
-const AUTH = {
-  accounts: [
-    { username: 'admin', password: 'admin1234', role: 'admin' },
-    { username: 'user',  password: 'user1234',  role: 'user' },
-  ],
+const API_BASE = 'https://my-blog-api-production-69ce.up.railway.app';
 
+const AUTH = {
   isLoggedIn() {
-    return sessionStorage.getItem('blog_auth') === 'true';
+    return !!sessionStorage.getItem('blog_token');
   },
 
   isAdmin() {
@@ -16,19 +13,29 @@ const AUTH = {
     return sessionStorage.getItem('blog_user') || '';
   },
 
-  login(username, password) {
-    const account = this.accounts.find(a => a.username === username && a.password === password);
-    if (account) {
-      sessionStorage.setItem('blog_auth', 'true');
-      sessionStorage.setItem('blog_role', account.role);
-      sessionStorage.setItem('blog_user', account.username);
-      return true;
+  getToken() {
+    return sessionStorage.getItem('blog_token') || '';
+  },
+
+  async login(username, password) {
+    const res = await fetch(`${API_BASE}/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || '로그인 실패');
     }
-    return false;
+    const data = await res.json();
+    sessionStorage.setItem('blog_token', data.token);
+    sessionStorage.setItem('blog_role', data.role);
+    sessionStorage.setItem('blog_user', data.username);
+    return data;
   },
 
   logout() {
-    sessionStorage.removeItem('blog_auth');
+    sessionStorage.removeItem('blog_token');
     sessionStorage.removeItem('blog_role');
     sessionStorage.removeItem('blog_user');
   },

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const titleInput = document.getElementById('post-title');
   const descInput = document.getElementById('post-description');
   const coverInput = document.getElementById('cover-url');
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (editId) {
     pageTitle.textContent = '글 수정';
     publishBtn.textContent = '저장';
-    const post = PostStore.getById(editId);
+    const post = await PostStore.getById(editId);
     if (post) {
       titleInput.value = post.title;
       descInput.value = post.description || '';
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     editorContent.focus();
   });
 
-  publishBtn.addEventListener('click', () => {
+  publishBtn.addEventListener('click', async () => {
     const title = titleInput.value.trim();
     const description = descInput.value.trim();
     const coverUrl = coverInput.value.trim();
@@ -87,28 +87,26 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (editId) {
-      const existing = PostStore.getById(editId);
-      if (existing) {
-        existing.title = title;
-        existing.description = description;
-        existing.coverUrl = coverUrl;
-        existing.content = content;
-        existing.updatedAt = new Date().toISOString();
-        PostStore.save(existing);
+    publishBtn.disabled = true;
+    publishBtn.textContent = '저장 중...';
+
+    try {
+      if (editId) {
+        await PostStore.save({
+          id: editId,
+          title, description, coverUrl, content,
+        });
+      } else {
+        await PostStore.save({
+          title, description, coverUrl, content,
+        });
       }
-    } else {
-      PostStore.save({
-        id: 'post_' + Date.now(),
-        title,
-        description,
-        coverUrl,
-        content,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      });
+      location.href = '/';
+    } catch (e) {
+      alert('저장에 실패했습니다: ' + e.message);
+      publishBtn.disabled = false;
+      publishBtn.textContent = editId ? '저장' : '발행';
     }
-    location.href = '/';
   });
 
   editorContent.addEventListener('paste', (e) => {

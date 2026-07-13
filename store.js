@@ -1,32 +1,65 @@
 const PostStore = {
-  getAll() {
-    const local = JSON.parse(localStorage.getItem('blog_posts') || '[]');
-    const staticIds = new Set(STATIC_POSTS.map(p => p.id));
-    const localOnly = local.filter(p => !staticIds.has(p.id));
-    const merged = [...localOnly, ...STATIC_POSTS];
-    merged.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    return merged;
+  async getAll() {
+    const res = await fetch(`${API_BASE}/api/posts`);
+    if (!res.ok) throw new Error('Failed to fetch posts');
+    const rows = await res.json();
+    return rows.map(r => ({
+      id: r.id,
+      title: r.title,
+      description: r.description,
+      coverUrl: r.cover_url,
+      content: r.content,
+      author: r.author,
+      createdAt: r.created_at,
+      updatedAt: r.updated_at,
+    }));
   },
 
-  getById(id) {
-    const local = JSON.parse(localStorage.getItem('blog_posts') || '[]');
-    return local.find(p => p.id === id) || STATIC_POSTS.find(p => p.id === id) || null;
+  async getById(id) {
+    const res = await fetch(`${API_BASE}/api/posts/${id}`);
+    if (!res.ok) return null;
+    const r = await res.json();
+    return {
+      id: r.id,
+      title: r.title,
+      description: r.description,
+      coverUrl: r.cover_url,
+      content: r.content,
+      author: r.author,
+      createdAt: r.created_at,
+      updatedAt: r.updated_at,
+    };
   },
 
-  save(post) {
-    const local = JSON.parse(localStorage.getItem('blog_posts') || '[]');
-    const idx = local.findIndex(p => p.id === post.id);
-    if (idx !== -1) {
-      local[idx] = post;
+  async save(post) {
+    const token = AUTH.getToken();
+    const headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
+
+    const existing = post.id ? await this.getById(post.id) : null;
+    if (existing) {
+      const res = await fetch(`${API_BASE}/api/posts/${post.id}`, {
+        method: 'PUT', headers,
+        body: JSON.stringify(post),
+      });
+      if (!res.ok) throw new Error('Failed to update post');
+      return post.id;
     } else {
-      local.unshift(post);
+      const res = await fetch(`${API_BASE}/api/posts`, {
+        method: 'POST', headers,
+        body: JSON.stringify(post),
+      });
+      if (!res.ok) throw new Error('Failed to create post');
+      const data = await res.json();
+      return data.id;
     }
-    localStorage.setItem('blog_posts', JSON.stringify(local));
   },
 
-  remove(id) {
-    const local = JSON.parse(localStorage.getItem('blog_posts') || '[]');
-    const updated = local.filter(p => p.id !== id);
-    localStorage.setItem('blog_posts', JSON.stringify(updated));
+  async remove(id) {
+    const token = AUTH.getToken();
+    const res = await fetch(`${API_BASE}/api/posts/${id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error('Failed to delete post');
   }
 };

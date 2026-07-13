@@ -68,18 +68,19 @@
         return;
       }
 
-      document.getElementById('login-form').addEventListener('submit', (e) => {
+      document.getElementById('login-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
         const errorEl = document.getElementById('login-error');
 
-        if (AUTH.login(username, password)) {
+        try {
+          await AUTH.login(username, password);
           const params = new URLSearchParams(location.search);
           const redirect = params.get('redirect');
           location.href = redirect || '/';
-        } else {
-          errorEl.textContent = '아이디 또는 비밀번호가 올바르지 않습니다.';
+        } catch (err) {
+          errorEl.textContent = err.message || '아이디 또는 비밀번호가 올바르지 않습니다.';
           document.getElementById('password').value = '';
           document.getElementById('password').focus();
         }

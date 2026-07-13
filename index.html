@@ -126,10 +126,9 @@
 
   <script src="script.js"></script>
   <script src="auth.js"></script>
-  <script src="posts-data.js"></script>
   <script src="store.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       document.querySelectorAll('#btn-logout, #btn-logout-mobile').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
@@ -140,32 +139,38 @@
 
       const grid = document.getElementById('posts-grid');
       const emptyState = document.getElementById('empty-state');
-      const posts = PostStore.getAll();
       const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-      if (posts.length === 0) {
+      try {
+        const posts = await PostStore.getAll();
+
+        if (posts.length === 0) {
+          emptyState.style.display = 'block';
+          return;
+        }
+
+        posts.forEach((post, i) => {
+          const date = new Date(post.createdAt);
+          const dateStr = `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
+          const desc = post.description || stripHtml(post.content || '').substring(0, 150) + '...';
+          const coverHtml = post.coverUrl
+            ? `<img src="${post.coverUrl}" alt="${escapeHtml(post.title)}" loading="${i < 4 ? 'eager' : 'lazy'}" class="post-image">`
+            : `<div class="post-image post-image-placeholder"></div>`;
+
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <a href="post.html?id=${post.id}" class="post-card">
+              ${coverHtml}
+              <h4 class="post-title">${escapeHtml(post.title)}</h4>
+              <p class="post-description">${escapeHtml(desc)}</p>
+              <p class="post-date"><time datetime="${post.createdAt}">${dateStr}</time></p>
+            </a>`;
+          grid.appendChild(li);
+        });
+      } catch (e) {
+        emptyState.textContent = '글을 불러오는 중 오류가 발생했습니다.';
         emptyState.style.display = 'block';
-        return;
       }
-
-      posts.forEach((post, i) => {
-        const date = new Date(post.createdAt);
-        const dateStr = `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
-        const desc = post.description || stripHtml(post.content).substring(0, 150) + '...';
-        const coverHtml = post.coverUrl
-          ? `<img src="${post.coverUrl}" alt="${escapeHtml(post.title)}" loading="${i < 4 ? 'eager' : 'lazy'}" class="post-image">`
-          : `<div class="post-image post-image-placeholder"></div>`;
-
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <a href="post.html?id=${post.id}" class="post-card">
-            ${coverHtml}
-            <h4 class="post-title">${escapeHtml(post.title)}</h4>
-            <p class="post-description">${escapeHtml(desc)}</p>
-            <p class="post-date"><time datetime="${post.createdAt}">${dateStr}</time></p>
-          </a>`;
-        grid.appendChild(li);
-      });
 
       function stripHtml(html) {
         const tmp = document.createElement('div');
