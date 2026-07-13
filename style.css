@@ -490,3 +490,23 @@ footer {
     opacity: 0.7;
   }
 }
+
+/* ===== Empty State ===== */
+.empty-state {
+  text-align: center;
+  opacity: 0.5;
+  font-size: 1.15rem;
+  padding: calc(var(--spacing) * 16) 0;
+}
+
+/* ===== Post image placeholder ===== */
+.post-image-placeholder {
+  background: color-mix(in oklab, var(--color-foreground) 10%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark .post-image-placeholder {
+  background: color-mix(in oklab, var(--color-foreground-dark) 10%, transparent);
+}

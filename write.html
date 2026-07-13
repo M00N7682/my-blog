@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>글쓰기 - My Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="app-container nav-inner">
+        <a href="/" aria-label="Home" class="logo-link">
+          <svg width="36" height="36" viewBox="0 0 1080 1080" fill="none">
+            <circle cx="540" cy="540" r="400" fill="currentColor"></circle>
+          </svg>
+        </a>
+        <div class="nav-right">
+          <a href="/" class="nav-link">Blog</a>
+          <a href="#talks" class="nav-link">Talks</a>
+          <a href="#about" class="nav-link">About</a>
+          <div class="theme-switcher">
+            <button class="theme-button active" data-theme="auto" aria-label="Auto Theme" title="System preference">
+              <svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m14.3 16l-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69L8.69 4H4v4.69L.69 12L4 15.31V20h4.69L12 23.31L15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"></path></svg>
+            </button>
+            <button class="theme-button" data-theme="light" aria-label="Light Theme" title="Light theme">
+              <svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m3.55 19.09l1.41 1.41l1.8-1.79l-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6s6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71l1.8 1.79l1.41-1.41l-1.79-1.8M20.45 5l-1.41-1.4l-1.8 1.79l1.42 1.42M13 1h-2v3h2M6.76 5.39L4.96 3.6L3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"></path></svg>
+            </button>
+            <button class="theme-button" data-theme="dark" aria-label="Dark Theme" title="Dark theme">
+              <svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3zm3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+            </button>
+          </div>
+        </div>
+        <button class="mobile-menu-btn" id="nav-open-btn" aria-label="Open navigation menu">
+          <svg width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+        </button>
+        <div class="mobile-menu" id="mobile-menu">
+          <button id="nav-close-btn" class="mobile-close-btn" aria-label="Close navigation menu">
+            <svg width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"></path></svg>
+          </button>
+          <div class="mobile-menu-links">
+            <a href="/" class="mobile-link">Blog</a>
+            <a href="#talks" class="mobile-link">Talks</a>
+            <a href="#about" class="mobile-link">About</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-wrapper">
+    <main class="editor-container">
+      <div class="editor-header">
+        <h1 class="editor-page-title" id="editor-page-title">새 글 작성</h1>
+        <div class="editor-actions">
+          <button class="btn-secondary-action" id="btn-cancel" onclick="location.href='/'">취소</button>
+          <button class="btn-primary-action" id="btn-publish">발행</button>
+        </div>
+      </div>
+
+      <div class="editor-form">
+        <input type="text" id="post-title" class="editor-title-input" placeholder="제목을 입력하세요" autocomplete="off">
+
+        <div class="cover-image-section">
+          <label class="cover-label" for="cover-url">커버 이미지 URL</label>
+          <div class="cover-input-row">
+            <input type="url" id="cover-url" class="editor-cover-input" placeholder="https://example.com/image.jpg">
+            <button class="btn-cover-preview" id="btn-preview-cover">미리보기</button>
+          </div>
+          <div class="cover-preview" id="cover-preview"></div>
+        </div>
+
+        <input type="text" id="post-description" class="editor-description-input" placeholder="요약 설명을 입력하세요 (목록에 표시됩니다)">
+
+        <div class="editor-toolbar" id="toolbar">
+          <button type="button" data-cmd="bold" title="굵게 (Ctrl+B)"><strong>B</strong></button>
+          <button type="button" data-cmd="italic" title="기울임 (Ctrl+I)"><em>I</em></button>
+          <button type="button" data-cmd="underline" title="밑줄 (Ctrl+U)"><u>U</u></button>
+          <button type="button" data-cmd="strikeThrough" title="취소선"><s>S</s></button>
+          <span class="toolbar-divider"></span>
+          <button type="button" data-cmd="formatBlock" data-value="H2" title="제목 2">H2</button>
+          <button type="button" data-cmd="formatBlock" data-value="H3" title="제목 3">H3</button>
+          <button type="button" data-cmd="formatBlock" data-value="H4" title="제목 4">H4</button>
+          <button type="button" data-cmd="formatBlock" data-value="P" title="본문">P</button>
+          <span class="toolbar-divider"></span>
+          <button type="button" data-cmd="insertUnorderedList" title="글머리 기호">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7 5h14v2H7zm0 8v-2h14v2zm0 6v-2h14v2zM4 4.5A1.5 1.5 0 1 1 4 7.5A1.5 1.5 0 0 1 4 4.5zm0 6A1.5 1.5 0 1 1 4 13.5A1.5 1.5 0 0 1 4 10.5zm0 6A1.5 1.5 0 1 1 4 19.5A1.5 1.5 0 0 1 4 16.5z"></path></svg>
+          </button>
+          <button type="button" data-cmd="insertOrderedList" title="번호 목록">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M7 5h14v2H7zm0 8v-2h14v2zm0 6v-2h14v2zM2 4h2v3H3V5H2zm1 7h1.5v.5h-1v1h1v.5H3v1h2.5v-4H3zm-.5 7.5h2v1H4v1h1v1H2.5v-1h1v-1h-1z"></path></svg>
+          </button>
+          <button type="button" data-cmd="formatBlock" data-value="BLOCKQUOTE" title="인용">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M14 17h3l2-4V7h-6v6h3M6 17h3l2-4V7H5v6h3"></path></svg>
+          </button>
+          <span class="toolbar-divider"></span>
+          <button type="button" id="btn-link" title="링크 삽입">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7a5 5 0 0 0-5 5a5 5 0 0 0 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1M8 13h8v-2H8zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4a5 5 0 0 0 5-5a5 5 0 0 0-5-5"></path></svg>
+          </button>
+          <button type="button" id="btn-code" title="코드 블록">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M8 3a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2H3v2h1a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2v-2H8v-5a2 2 0 0 0-1-1.73A2 2 0 0 0 8 10V5h2V3zm8 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 1-1.73A2 2 0 0 1 16 10V5h-2V3z"></path></svg>
+          </button>
+          <button type="button" data-cmd="removeFormat" title="서식 제거">
+            <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M6 5v.18L8.82 8h2.4l-.72 1.68l2.1 2.1L14.21 8H20V5zM3.27 5L2 6.27l6.97 6.97L6.5 19h3l1.57-3.66L16.73 21L18 19.73z"></path></svg>
+          </button>
+        </div>
+
+        <div class="editor-content" id="editor-content" contenteditable="true" data-placeholder="여기에 글을 작성하세요..."></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    if (!AUTH.isLoggedIn()) {
+      location.href = 'login.html?redirect=' + encodeURIComponent(location.href);
+    }
+  </script>
+  <script src="posts-data.js"></script>
+  <script src="store.js"></script>
+  <script src="editor.js"></script>
+</body>
+</html>
