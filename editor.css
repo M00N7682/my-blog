@@ -24,7 +24,7 @@
   gap: calc(var(--spacing) * 3);
 }
 
-.btn-primary-action, .btn-secondary-action {
+.btn-primary-action, .btn-secondary-action, .btn-draft-action {
   padding: calc(var(--spacing) * 2.5) calc(var(--spacing) * 6);
   border-radius: 0.5rem;
   font-size: 1rem;
@@ -55,8 +55,18 @@
   border-color: color-mix(in oklab, var(--color-foreground-dark) 30%, transparent);
 }
 
+.btn-draft-action {
+  background-color: #D97706;
+  color: #fff;
+}
+
+.dark .btn-draft-action {
+  background-color: #F59E0B;
+  color: #1a1a1a;
+}
+
 @media (hover: hover) {
-  .btn-primary-action:hover, .btn-secondary-action:hover {
+  .btn-primary-action:hover, .btn-secondary-action:hover, .btn-draft-action:hover {
     opacity: 0.75;
   }
 }
@@ -95,14 +105,12 @@
 }
 
 .editor-title-input::placeholder,
-.editor-description-input::placeholder,
-.editor-cover-input::placeholder {
+.editor-description-input::placeholder {
   color: color-mix(in oklab, var(--color-foreground) 40%, transparent);
 }
 
 .dark .editor-title-input::placeholder,
-.dark .editor-description-input::placeholder,
-.dark .editor-cover-input::placeholder {
+.dark .editor-description-input::placeholder {
   color: color-mix(in oklab, var(--color-foreground-dark) 40%, transparent);
 }
 
@@ -146,53 +154,55 @@
   letter-spacing: 0.05em;
 }
 
-.cover-input-row {
+.cover-upload-area {
+  border: 2px dashed;
+  border-color: color-mix(in oklab, var(--color-foreground) 20%, transparent);
+  border-radius: 0.75rem;
+  padding: calc(var(--spacing) * 6);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+  min-height: 120px;
   display: flex;
-  gap: calc(var(--spacing) * 2);
+  align-items: center;
+  justify-content: center;
 }
 
-.editor-cover-input {
-  flex: 1;
-  font-size: 0.95rem;
-  padding: calc(var(--spacing) * 2.5) calc(var(--spacing) * 3);
-  border: 1px solid;
-  border-color: color-mix(in oklab, var(--color-foreground) 15%, transparent);
-  border-radius: 0.5rem;
-  background: transparent;
-  color: inherit;
-  outline: none;
-  font-family: var(--font-sans);
+.dark .cover-upload-area {
+  border-color: color-mix(in oklab, var(--color-foreground-dark) 20%, transparent);
 }
 
-.dark .editor-cover-input {
-  border-color: color-mix(in oklab, var(--color-foreground-dark) 15%, transparent);
-}
-
-.editor-cover-input:focus {
+.cover-upload-area:hover,
+.cover-upload-area.drag-over {
   border-color: var(--color-primary);
+  background: color-mix(in oklab, var(--color-primary) 5%, transparent);
 }
 
-.dark .editor-cover-input:focus {
+.dark .cover-upload-area:hover,
+.dark .cover-upload-area.drag-over {
   border-color: var(--color-primary-dark);
+  background: color-mix(in oklab, var(--color-primary-dark) 5%, transparent);
 }
 
-.btn-cover-preview {
-  padding: calc(var(--spacing) * 2) calc(var(--spacing) * 4);
-  border-radius: 0.5rem;
+.cover-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--spacing) * 2);
+  opacity: 0.6;
   font-size: 0.875rem;
-  font-weight: 600;
-  background: color-mix(in oklab, var(--color-foreground) 10%, transparent);
-  color: inherit;
-  white-space: nowrap;
+  text-align: center;
 }
 
-.dark .btn-cover-preview {
-  background: color-mix(in oklab, var(--color-foreground-dark) 10%, transparent);
+.cover-upload-placeholder svg {
+  opacity: 0.5;
 }
 
 .cover-preview {
+  display: none;
   border-radius: 0.75rem;
   overflow: hidden;
+  width: 100%;
 }
 
 .cover-preview img {
@@ -338,6 +348,12 @@
 .dark .editor-content a {
   color: var(--color-primary-dark);
 }
+.editor-content img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin: 1rem auto;
+  display: block;
+}
 
 /* ===== Post Detail Page ===== */
 .post-detail-container {
@@ -476,7 +492,8 @@
 .post-detail-body img {
   max-width: 100%;
   border-radius: 0.5rem;
-  margin: 1rem 0;
+  margin: 1rem auto;
+  display: block;
 }
 
 /* ===== Write Button (FAB on index) ===== */
@@ -650,4 +667,69 @@
   .btn-login:hover {
     opacity: 0.8;
   }
+}
+
+/* ===== Drafts Section ===== */
+.drafts-section {
+  margin-top: calc(var(--spacing) * 12);
+  padding-top: calc(var(--spacing) * 8);
+  border-top: 1px solid color-mix(in oklab, var(--color-foreground) 12%, transparent);
+}
+
+.dark .drafts-section {
+  border-top-color: color-mix(in oklab, var(--color-foreground-dark) 12%, transparent);
+}
+
+.drafts-heading {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: calc(var(--spacing) * 4);
+  opacity: 0.8;
+}
+
+.drafts-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 2);
+}
+
+.draft-item {
+  border: 1px solid color-mix(in oklab, var(--color-foreground) 10%, transparent);
+  border-radius: 0.5rem;
+  transition: border-color 0.15s;
+}
+
+.dark .draft-item {
+  border-color: color-mix(in oklab, var(--color-foreground-dark) 10%, transparent);
+}
+
+@media (hover: hover) {
+  .draft-item:hover {
+    border-color: var(--color-primary);
+  }
+  .dark .draft-item:hover {
+    border-color: var(--color-primary-dark);
+  }
+}
+
+.draft-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: calc(var(--spacing) * 3) calc(var(--spacing) * 4);
+  gap: calc(var(--spacing) * 4);
+}
+
+.draft-title {
+  font-weight: 500;
+  font-size: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.draft-date {
+  font-size: 0.8rem;
+  opacity: 0.5;
+  white-space: nowrap;
 }

@@ -10,6 +10,27 @@ const PostStore = {
       coverUrl: r.cover_url,
       content: r.content,
       author: r.author,
+      status: r.status,
+      createdAt: r.created_at,
+      updatedAt: r.updated_at,
+    }));
+  },
+
+  async getDrafts() {
+    const token = AUTH.getToken();
+    const res = await fetch(`${API_BASE}/api/drafts`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    if (!res.ok) throw new Error('Failed to fetch drafts');
+    const rows = await res.json();
+    return rows.map(r => ({
+      id: r.id,
+      title: r.title,
+      description: r.description,
+      coverUrl: r.cover_url,
+      content: r.content,
+      author: r.author,
+      status: r.status,
       createdAt: r.created_at,
       updatedAt: r.updated_at,
     }));
@@ -26,6 +47,7 @@ const PostStore = {
       coverUrl: r.cover_url,
       content: r.content,
       author: r.author,
+      status: r.status,
       createdAt: r.created_at,
       updatedAt: r.updated_at,
     };

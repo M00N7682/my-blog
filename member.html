@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Before It Became an API</title>
+  <title>Members - Before It Became an API</title>
+  <meta name="description" content="Blog members">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -16,8 +17,8 @@
       <div class="app-container nav-inner">
         <a href="/" class="logo-link wordmark">Before It Became an API</a>
         <div class="nav-right">
-          <a href="/" class="nav-link active">Blog</a>
-          <a href="member.html" class="nav-link">Member</a>
+          <a href="/" class="nav-link">Blog</a>
+          <a href="member.html" class="nav-link active">Member</a>
           <a href="about.html" class="nav-link">About</a>
           <a href="login.html" class="nav-link guest-only">Login</a>
           <a href="#" class="nav-link auth-only" id="btn-logout">Logout</a>
@@ -41,11 +42,22 @@
             <svg width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"></path></svg>
           </button>
           <div class="mobile-menu-links">
-            <a href="/" class="mobile-link active">Blog</a>
-            <a href="member.html" class="mobile-link">Member</a>
+            <a href="/" class="mobile-link">Blog</a>
+            <a href="member.html" class="mobile-link active">Member</a>
             <a href="about.html" class="mobile-link">About</a>
             <a href="login.html" class="mobile-link guest-only">Login</a>
             <a href="#" class="mobile-link auth-only" id="btn-logout-mobile">Logout</a>
+            <div class="theme-switcher mobile-theme-switcher">
+              <button class="theme-button active" data-theme="auto" aria-label="Auto Theme">
+                <svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m14.3 16l-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69L8.69 4H4v4.69L.69 12L4 15.31V20h4.69L12 23.31L15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"></path></svg>
+              </button>
+              <button class="theme-button" data-theme="light" aria-label="Light Theme">
+                <svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m3.55 19.09l1.41 1.41l1.8-1.79l-1.42-1.42M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6s6-2.69 6-6c0-3.32-2.69-6-6-6m8 7h3v-2h-3m-2.76 7.71l1.8 1.79l1.41-1.41l-1.79-1.8M20.45 5l-1.41-1.4l-1.8 1.79l1.42 1.42M13 1h-2v3h2M6.76 5.39L4.96 3.6L3.55 5l1.79 1.81zM1 13h3v-2H1m12 9h-2v3h2"></path></svg>
+              </button>
+              <button class="theme-button" data-theme="dark" aria-label="Dark Theme">
+                <svg width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3zm3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -53,18 +65,14 @@
   </header>
 
   <div class="page-wrapper">
-    <article class="post-detail-container app-container" id="post-detail">
-      <div class="post-detail-header">
-        <h1 class="post-detail-title" id="detail-title"></h1>
-        <p class="post-detail-date" id="detail-date"></p>
-        <div class="post-detail-actions admin-only" id="detail-actions">
-          <button class="btn-edit" id="btn-edit">수정</button>
-          <button class="btn-delete" id="btn-delete">삭제</button>
-        </div>
-      </div>
-      <img id="detail-cover" class="post-detail-cover" alt="" style="display:none;">
-      <div class="post-detail-body" id="detail-body"></div>
-    </article>
+    <main class="app-container main-content">
+      <h1 class="page-title">Members</h1>
+    </main>
+
+    <section class="app-container members-section">
+      <div class="members-grid" id="members-grid"></div>
+      <p class="empty-state" id="empty-state" style="display:none;">멤버 정보를 불러올 수 없습니다.</p>
+    </section>
   </div>
 
   <footer>
@@ -85,16 +93,43 @@
 
   <script src="script.js"></script>
   <script src="auth.js"></script>
-  <script src="store.js"></script>
   <script>
-    document.querySelectorAll('#btn-logout, #btn-logout-mobile').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        AUTH.logout();
-        location.href = '/';
+    document.addEventListener('DOMContentLoaded', async () => {
+      document.querySelectorAll('#btn-logout, #btn-logout-mobile').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          AUTH.logout();
+          location.reload();
+        });
       });
+
+      const grid = document.getElementById('members-grid');
+      const emptyState = document.getElementById('empty-state');
+      const API_BASE = 'https://my-blog-api-production-69ce.up.railway.app';
+
+      try {
+        const res = await fetch(`${API_BASE}/api/members`);
+        const members = await res.json();
+
+        if (!members.length) {
+          emptyState.style.display = 'block';
+          return;
+        }
+
+        members.forEach(() => {
+          const card = document.createElement('div');
+          card.className = 'member-card';
+          card.innerHTML = `
+            <div class="member-avatar"></div>
+            <h3 class="member-name">&nbsp;</h3>
+          `;
+          grid.appendChild(card);
+        });
+      } catch (e) {
+        emptyState.textContent = '멤버 정보를 불러오는 중 오류가 발생했습니다.';
+        emptyState.style.display = 'block';
+      }
     });
   </script>
-  <script src="posts.js"></script>
 </body>
 </html>
