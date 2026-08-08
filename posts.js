@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const coverEl = document.getElementById('detail-cover');
   if (post.coverUrl) {
+    // Hide the cover entirely if the image is gone, rather than showing a broken icon.
+    coverEl.addEventListener('error', () => { coverEl.style.display = 'none'; }, { once: true });
     coverEl.src = post.coverUrl;
     coverEl.alt = post.title;
     coverEl.style.display = 'block';

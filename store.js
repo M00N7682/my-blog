@@ -1,19 +1,33 @@
+/**
+ * Upgrades http:// image URLs to https:// so covers are not blocked as
+ * mixed content when the blog itself is served over https.
+ */
+function normalizeCoverUrl(url) {
+  if (!url) return '';
+  return url.startsWith('http://') ? 'https://' + url.slice('http://'.length) : url;
+}
+
+/** Maps an API row onto the shape the pages render. */
+function mapPost(r) {
+  return {
+    id: r.id,
+    title: r.title,
+    description: r.description,
+    coverUrl: normalizeCoverUrl(r.cover_url),
+    content: r.content,
+    author: r.author,
+    status: r.status,
+    createdAt: r.created_at,
+    updatedAt: r.updated_at,
+  };
+}
+
 const PostStore = {
   async getAll() {
     const res = await fetch(`${API_BASE}/api/posts`);
     if (!res.ok) throw new Error('Failed to fetch posts');
     const rows = await res.json();
-    return rows.map(r => ({
-      id: r.id,
-      title: r.title,
-      description: r.description,
-      coverUrl: r.cover_url,
-      content: r.content,
-      author: r.author,
-      status: r.status,
-      createdAt: r.created_at,
-      updatedAt: r.updated_at,
-    }));
+    return rows.map(mapPost);
   },
 
   async getDrafts() {
@@ -23,34 +37,13 @@ const PostStore = {
     });
     if (!res.ok) throw new Error('Failed to fetch drafts');
     const rows = await res.json();
-    return rows.map(r => ({
-      id: r.id,
-      title: r.title,
-      description: r.description,
-      coverUrl: r.cover_url,
-      content: r.content,
-      author: r.author,
-      status: r.status,
-      createdAt: r.created_at,
-      updatedAt: r.updated_at,
-    }));
+    return rows.map(mapPost);
   },
 
   async getById(id) {
     const res = await fetch(`${API_BASE}/api/posts/${id}`);
     if (!res.ok) return null;
-    const r = await res.json();
-    return {
-      id: r.id,
-      title: r.title,
-      description: r.description,
-      coverUrl: r.cover_url,
-      content: r.content,
-      author: r.author,
-      status: r.status,
-      createdAt: r.created_at,
-      updatedAt: r.updated_at,
-    };
+    return mapPost(await res.json());
   },
 
   async save(post) {

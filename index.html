@@ -133,7 +133,7 @@
           const dateStr = `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
           const desc = post.description || stripHtml(post.content || '').substring(0, 150) + '...';
           const coverHtml = post.coverUrl
-            ? `<img src="${post.coverUrl}" alt="${escapeHtml(post.title)}" loading="${i < 4 ? 'eager' : 'lazy'}" class="post-image">`
+            ? `<img src="${escapeHtml(post.coverUrl)}" alt="${escapeHtml(post.title)}" loading="${i < 4 ? 'eager' : 'lazy'}" class="post-image">`
             : `<div class="post-image post-image-placeholder"></div>`;
 
           const li = document.createElement('li');
@@ -145,10 +145,27 @@
               <p class="post-date"><time datetime="${post.createdAt}">${dateStr}</time></p>
             </a>`;
           grid.appendChild(li);
+
+          const img = li.querySelector('img.post-image');
+          if (img) watchCover(img);
         });
       } catch (e) {
         emptyState.textContent = '글을 불러오는 중 오류가 발생했습니다.';
         emptyState.style.display = 'block';
+      }
+
+      /**
+       * Swaps a cover image for the neutral placeholder once it fails to load,
+       * so dead or expired image URLs never render as a broken-image icon.
+       */
+      function watchCover(img) {
+        const replace = () => {
+          const placeholder = document.createElement('div');
+          placeholder.className = 'post-image post-image-placeholder';
+          img.replaceWith(placeholder);
+        };
+        img.addEventListener('error', replace, { once: true });
+        if (img.complete && img.naturalWidth === 0) replace();
       }
 
       function stripHtml(html) {
