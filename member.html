@@ -70,8 +70,18 @@
     </main>
 
     <section class="app-container members-section">
-      <div class="members-grid" id="members-grid"></div>
-      <p class="empty-state" id="empty-state" style="display:none;">멤버 정보를 불러올 수 없습니다.</p>
+      <div class="members-grid">
+        <div class="member-card">
+          <div class="member-avatar"></div>
+          <h3 class="member-name">문덕룡</h3>
+          <p class="member-role">레브잇 Product Engineer</p>
+        </div>
+        <div class="member-card">
+          <div class="member-avatar"></div>
+          <h3 class="member-name">이준희</h3>
+          <p class="member-role">미래에셋 데이터 애널리스트</p>
+        </div>
+      </div>
     </section>
   </div>
 
@@ -94,7 +104,7 @@
   <script src="script.js"></script>
   <script src="auth.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', async () => {
+    document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('#btn-logout, #btn-logout-mobile').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
@@ -102,33 +112,6 @@
           location.reload();
         });
       });
-
-      const grid = document.getElementById('members-grid');
-      const emptyState = document.getElementById('empty-state');
-      const API_BASE = 'https://my-blog-api-production-69ce.up.railway.app';
-
-      try {
-        const res = await fetch(`${API_BASE}/api/members`);
-        const members = await res.json();
-
-        if (!members.length) {
-          emptyState.style.display = 'block';
-          return;
-        }
-
-        members.forEach(() => {
-          const card = document.createElement('div');
-          card.className = 'member-card';
-          card.innerHTML = `
-            <div class="member-avatar"></div>
-            <h3 class="member-name">&nbsp;</h3>
-          `;
-          grid.appendChild(card);
-        });
-      } catch (e) {
-        emptyState.textContent = '멤버 정보를 불러오는 중 오류가 발생했습니다.';
-        emptyState.style.display = 'block';
-      }
     });
   </script>
 </body>
